@@ -6,6 +6,11 @@ const moment = require("moment")
 
 // create our express app
 const app = express()
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 
 // database
 
