@@ -18,13 +18,13 @@ export default createStore({
     //       }
     //     });
     // },
-    // GetAllQuotes (state) {
-    //   fetch("http://localhost:3000/cups")
-    //     .then(res => res.json())
-    //     .then(data => {
-    //       state.quotes = data;
-    //     });
-    // },
+    GetAllCups (state) {
+      fetch("http://localhost:3000/cups")
+        .then(res => res.json())
+        .then(data => {
+          state.quotes = data;
+        });
+    },
     SubmitCup (state, data) {
       console.log(data)
         fetch("http://localhost:3000/cups/newPending", {
