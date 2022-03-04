@@ -1,13 +1,15 @@
 const mongoose = require('mongoose')
 const CupsSchema = new mongoose.Schema({
     name: String,
-    status: String,
-    startDate: String,
     description: String,
-    teamSize: String,
+    logo: String,
+    prize: String,
+    startDate: String,
     mapOption: String,
     maps: String,
-    prize: String,
+    teamSize: String,
     prizeDistribution: String,
+    matchGenerator: String,
+    status: String
 })
-module.exports = mongoose.model('quote', CupsSchema)
+module.exports = mongoose.model('cup', CupsSchema)

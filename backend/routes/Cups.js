@@ -24,6 +24,7 @@ router.post('/new', async (req, res) => {
 
 router.post('/newPending', async (req, res) => {
 	const newCup = new Cup(req.body);
+	const savedCup = newCup.save();
 	
 	
 	await client.channels.cache.get('947559836286074924')
@@ -41,9 +42,11 @@ router.post('/newPending', async (req, res) => {
 			const yes = collected.first().count
 			const no = collected.last().count
 			if (yes > no) {
-				const savedCup = newCup.save();
+				// const savedCup = newCup.save();
 				console.log("savedCup", savedCup)
 				res.json(savedCup);
+			} else {
+				console.log("votefailed")
 			}
 		})
 		.catch(collected => {
