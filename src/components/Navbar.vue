@@ -49,8 +49,8 @@ export default {
     }
   },
   mounted() {
-    console.log(AuthenticationState)
-    console.log(AuthenticationProperties)
+    // console.log(AuthenticationState)
+    // console.log(AuthenticationProperties)
   },
   methods: {
     dropdown () {
@@ -65,7 +65,7 @@ export default {
       });
     },
     team () {
-      console.log(this.$auth)
+      // console.log(this.$auth)
     },
     cup () {
       this.$router.push('/cups')
@@ -77,7 +77,7 @@ export default {
       this.$router.push('/')
     },
     profile () {
-      console.log("pushing")
+      // console.log("pushing")
       this.$router.push('/profile')
     }
   }

@@ -55,10 +55,7 @@ const routes = [
           if (AuthenticationState.authenticated) {
               return true;
           }
-          console.log(HOST+'/CreateCup')
-          AuthenticationProperties.loginWithRedirect({
-            redirect_uri: HOST+'/CreateCup'
-          })
+          AuthenticationProperties.loginWithRedirect()
           return false;
       };
 
