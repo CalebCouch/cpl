@@ -2,6 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { AuthenticationState, AuthenticationProperties } from 'vue-auth0-plugin';
 import Home from '../components/Home.vue'
 import { watch } from 'vue';
+// import {envy} from 'envy';
+// const env = envy();
+const env = process.env
+const HOST = env.VUE_APP_AUTH_HOST
 
 const routes = [
   {
@@ -20,7 +24,7 @@ const routes = [
               return true;
           }
           AuthenticationProperties.loginWithRedirect({
-            redirect_uri: 'http://localhost:8080/profile/'
+            redirect_uri: HOST+'/profile/'
           })
           return false;
       };
@@ -52,7 +56,7 @@ const routes = [
               return true;
           }
           AuthenticationProperties.loginWithRedirect({
-            redirect_uri: 'http://localhost:8080/profile/'
+            redirect_uri: HOST+'/profile/'
           })
           return false;
       };

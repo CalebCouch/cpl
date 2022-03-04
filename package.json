@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "server": "source .env; nodemon backend/app.js",
+    "serve": "source .env; vue-cli-service serve",
+    "build": "source .env; vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
     "discord.js": "^13.6.0",
+    "envy": "^2.0.0",
     "moment": "^2.29.1",
     "mongoose": "^6.2.3",
     "uploadcare-widget": "^3.17.0",
