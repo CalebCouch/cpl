@@ -186,7 +186,7 @@ export default {
 		},
 		CreateCup() {
 			console.log(this.store)
-			this.store.commit('MakeNewQuote', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending"});
+			this.store.commit('SubmitCup', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending"});
 		},
 		UpdateTextArea() {
 			const tx = document.getElementsByTagName("textarea");
