@@ -19,7 +19,7 @@ export default createStore({
     //     });
     // },
     GetAllCups (state) {
-      fetch("http://localhost:3000/cups")
+      fetch("http://localhost:3000/")
         .then(res => res.json())
         .then(data => {
           state.quotes = data;
