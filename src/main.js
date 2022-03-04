@@ -18,7 +18,7 @@ app.use(VueAuth0Plugin, {
   domain: config.domain,
   client_id: config.clientId,
   onRedirectCallback: appState => {
-    // console.log(appState)
+    console.log(appState)
   }
 });
 app.use(PerfectScrollbar)
