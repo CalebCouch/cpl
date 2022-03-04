@@ -26,7 +26,7 @@ mongoose.connect(uri, {
   .catch(err => console.log(err))
 
 // middleware
-app.use(cors())
+// app.use(cors())
 app.use(bodyParser.json())
 
 // discord
