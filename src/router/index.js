@@ -56,7 +56,7 @@ const routes = [
               return true;
           }
           AuthenticationProperties.loginWithRedirect({
-            redirect_uri: HOST+'/profile/'
+            redirect_uri: HOST+this.path
           })
           return false;
       };
