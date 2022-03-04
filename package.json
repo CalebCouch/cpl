@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "server": ". .env; nodemon backend/app.js",
-    "serve": ". .env; vue-cli-service serve",
-    "build": ". .env; vue-cli-service build",
+    "server": "nodemon backend/app.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
