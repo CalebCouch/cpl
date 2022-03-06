@@ -93,6 +93,8 @@ import { useStore } from 'vuex';
 import moment from 'moment'
 import uploadcare from 'uploadcare-widget/uploadcare.lang.en.min.js'
 import uploadcareTabEffects from 'uploadcare-widget-tab-effects/dist/uploadcare.tab-effects.lang.en.min.js'
+import { AuthenticationState } from 'vue-auth0-plugin';
+
 
 
 
@@ -187,7 +189,7 @@ export default {
 		},
 		CreateCup() {
 			console.log(this.store)
-			this.store.commit('SubmitCup', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: this., createdAt: moment()});
+			this.store.commit('SubmitCup', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment()});
 		},
 		UpdateTextArea() {
 			const tx = document.getElementsByTagName("textarea");

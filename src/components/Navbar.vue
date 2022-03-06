@@ -61,7 +61,7 @@ export default {
     },
     login() {
       AuthenticationProperties.loginWithRedirect({
-        redirect_uri: 'http://localhost:8080/profile/'
+        redirect_uri: 'http://localhost:8080/'
       });
     },
     team () {

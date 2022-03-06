@@ -1,4 +1,8 @@
 import { createStore } from 'vuex'
+const env = process.env
+const HOST = env.VUE_APP_SERVER_HOST
+console.log(HOST)
+console.log(env)
 
 export default createStore({
   state: {
@@ -19,7 +23,7 @@ export default createStore({
     //     });
     // },
     GetAllCups (state) {
-      fetch("https://cproleague.com/api/")
+      fetch(HOST+"/")
         .then(res => res.json())
         .then(data => {
           state.quotes = data;
@@ -27,14 +31,14 @@ export default createStore({
     },
     SubmitCup (state, data) {
       console.log(data)
-        fetch("https://cproleague.com/api/cups/newPending", {
+        fetch(HOST+"/cups/newPending", {
       method: "POST",
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(data)
     }).then(res => {
       console.log("Request complete! response:", res);
     }).then(
-    fetch("http://localhost:3000/cups")
+    fetch(HOST+"/cups")
         .then(res => res.json())
         .then(datares => {
           state.cups = datares;
