@@ -27,6 +27,7 @@
 import { AuthenticationState, AuthenticationProperties } from 'vue-auth0-plugin';
 
 
+
 export default {
   name: 'Navbar',
   data () {
@@ -60,8 +61,10 @@ export default {
       AuthenticationProperties.logout()
     },
     login() {
+      const env = process.env
+      const HOST = env.VUE_APP_AUTH_HOST
       AuthenticationProperties.loginWithRedirect({
-        redirect_uri: 'http://localhost:8080/'
+        redirect_uri: HOST+'/'
       });
     },
     team () {
