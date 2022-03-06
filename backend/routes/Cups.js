@@ -36,7 +36,7 @@ const approveOne = (id, cup) => {
 
 router.post('/newPending', async (req, res) => {
 	const newCup = new Cup(req.body);
-	const savedCup = newCup.save();
+	const savedCup = await newCup.save();
 	
 	
 	await client.channels.cache.get('947559836286074924')
