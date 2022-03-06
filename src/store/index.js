@@ -19,7 +19,7 @@ export default createStore({
     //     });
     // },
     GetAllCups (state) {
-      fetch("http://162.0.224.190:3000/")
+      fetch("http://localhost/api")
         .then(res => res.json())
         .then(data => {
           state.quotes = data;
