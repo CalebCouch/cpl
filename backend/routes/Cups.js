@@ -23,14 +23,14 @@ router.post('/new', async (req, res) => {
 });
 
 const deleteOne = (id) => {
-	const result = await Cup.findByIdAndDelete({ _id: id });
+	const result = Cup.findByIdAndDelete({ _id: id });
 	return result
 }
 
 const approveOne = (id, cup) => {
 	let approved = cup 
 	approved.status = "approved"
-	const q = await Cup.updateOne({_id: id}, {$set: approved.body});
+	const q = Cup.updateOne({_id: id}, {$set: approved.body});
 	return q
 }
 
