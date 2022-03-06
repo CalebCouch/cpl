@@ -22,6 +22,18 @@ router.post('/new', async (req, res) => {
 	res.json(savedCup);
 });
 
+const deleteOne = (id) => {
+	const result = await Cup.findByIdAndDelete({ _id: id });
+	return result
+}
+
+const approveOne = (id, cup) => {
+	let approved = cup 
+	approved.status = "approved"
+	const q = await Cup.updateOne({_id: id}, {$set: approved.body});
+	return q
+}
+
 router.post('/newPending', async (req, res) => {
 	const newCup = new Cup(req.body);
 	const savedCup = newCup.save();
@@ -46,13 +58,13 @@ router.post('/newPending', async (req, res) => {
 			if (yes > no) {
 				let approved = savedCup
 				approved.status = "approved"
-				const q = await Cup.updateOne({_id: id}, {$set: approved.body});
+				const q = approveOne(id, savedCup)
 				console.log("savedCup", savedCup)
 				res.json(q);
 				// res.json(savedCup);
 			} else {
 				console.log("votefailed")
-				const result = await Cup.findByIdAndDelete({ _id: id });
+				const result = deleteOne; 
 				res.json(result);
 			}
 		})
