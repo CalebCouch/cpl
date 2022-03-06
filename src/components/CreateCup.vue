@@ -157,7 +157,7 @@ export default {
 	},
 	name: "CreateCup",
 	mounted () {
-		this.store.commit('GetAllCups');
+		// this.store.commit('GetAllCups');
 		uploadcare.registerTab('preview', uploadcareTabEffects)
 		const widget = uploadcare.Widget("[role=uploadcare-uploader]");
 

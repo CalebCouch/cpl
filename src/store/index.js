@@ -27,7 +27,7 @@ export default createStore({
     },
     SubmitCup (state, data) {
       console.log(data)
-        fetch("http://localhost:3000/cups/newPending", {
+        fetch("https://cproleague.com/api/cups/newPending", {
       method: "POST",
       headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(data)
