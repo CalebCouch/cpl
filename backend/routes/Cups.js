@@ -56,7 +56,7 @@ router.post('/newPending', async (req, res) => {
 			const id = savedCup._id
 			console.log("id",id)
 			if (yes > no) {
-				let approved = cup 
+				let approved = savedCup 
 				approved.status = "approved"
 				const q = Cup.updateOne({_id: id}, {$set: approved.body});
 				console.log("savedCup", savedCup)
