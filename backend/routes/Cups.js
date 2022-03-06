@@ -23,7 +23,7 @@ router.post('/new', async (req, res) => {
 });
 
 const deleteOne = (id) => {
-	const result = Cup.findByIdAndDelete({ _id: id });
+	const result = 
 	return result
 }
 
@@ -57,15 +57,13 @@ router.post('/newPending', async (req, res) => {
 			console.log("id",id)
 			if (yes > no) {
 				Cup.updateOne({_id: id}, {$set: {status: "approved"}}).then((q) => {
-					console.log("q", q)
+					res.json(q);
 				})
-				console.log("savedCup", savedCup)
-				// res.json(q);
-				// res.json(savedCup);
 			} else {
 				console.log("votefailed")
-				const result = deleteOne; 
-				// res.json(result);
+				const result = Cup.findByIdAndDelete({ _id: id }).then((q) => {
+					res.json(q)
+				})
 			}
 		})
 		.catch(collected => {
