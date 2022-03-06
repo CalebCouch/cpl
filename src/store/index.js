@@ -19,37 +19,7 @@ export default createStore({
     //     });
     // },
     GetAllCups (state) {
-      fetch("http://localhost:3000/")
-        .then(res => res.json())
-        .then(data => {
-          state.quotes = data;
-        });
-      fetch("https://localhost:3000/")
-        .then(res => res.json())
-        .then(data => {
-          state.quotes = data;
-        });
-      fetch("http://localhost/")
-        .then(res => res.json())
-        .then(data => {
-          state.quotes = data;
-        });
-      fetch("https://localhost/")
-        .then(res => res.json())
-        .then(data => {
-          state.quotes = data;
-        });
-      fetch("http://localhost/api")
-        .then(res => res.json())
-        .then(data => {
-          state.quotes = data;
-        });
-      fetch("https://localhost/api")
-        .then(res => res.json())
-        .then(data => {
-          state.quotes = data;
-        });
-      fetch("https://cproleague.com/api")
+      fetch("https://cproleague.com/api/")
         .then(res => res.json())
         .then(data => {
           state.quotes = data;
