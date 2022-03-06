@@ -38,17 +38,16 @@ router.post('/newPending', async (req, res) => {
 		//moment.duration(1, "days")
 		message.awaitReactions({ filter, time: 10000})
 		.then(collected => {
-			console.log(collected)
 			const yes = collected.first().count
 			const no = collected.last().count
 			const id = savedCup._id
-			console.log("id",id)
 			if (yes > no) {
+				console.log("vote approved", id)
 				Cup.updateOne({_id: id}, {$set: {status: "approved"}}).then((q) => {
 					res.json(q);
 				})
 			} else {
-				console.log("votefailed")
+				console.log("vote failed", id)
 				const result = Cup.findByIdAndDelete({ _id: id }).then((q) => {
 					res.json(q)
 				})

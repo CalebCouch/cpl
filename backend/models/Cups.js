@@ -10,6 +10,8 @@ const CupsSchema = new mongoose.Schema({
     teamSize: String,
     prizeDistribution: String,
     matchGenerator: String,
-    status: String
+    status: String,
+    createdBy: String,
+    createdAt: String
 })
 module.exports = mongoose.model('cup', CupsSchema)
