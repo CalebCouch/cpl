@@ -22,18 +22,6 @@ router.post('/new', async (req, res) => {
 	res.json(savedCup);
 });
 
-const deleteOne = (id) => {
-	const result = 
-	return result
-}
-
-const approveOne = (id, cup) => {
-	let approved = cup 
-	approved.status = "approved"
-	const q = Cup.updateOne({_id: id}, {$set: approved.body});
-	return q
-}
-
 router.post('/newPending', async (req, res) => {
 	const newCup = new Cup(req.body);
 	const savedCup = await newCup.save();
