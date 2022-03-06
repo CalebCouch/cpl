@@ -19,7 +19,7 @@ export default createStore({
     //     });
     // },
     GetAllCups (state) {
-      fetch("http://localhost/api")
+      fetch("https://cproleague.com/api")
         .then(res => res.json())
         .then(data => {
           state.quotes = data;
