@@ -33,5 +33,6 @@ export default {
   #container {
     width: 100vw;
     height: 90vh;
+    overflow: auto;
   }
 </style>

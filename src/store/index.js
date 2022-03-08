@@ -23,10 +23,10 @@ export default createStore({
     //     });
     // },
     GetAllCups (state) {
-      fetch(HOST+"/")
+      fetch(HOST+"/cups")
         .then(res => res.json())
         .then(data => {
-          state.quotes = data;
+          state.cups = data;
         });
     },
     SubmitCup (state, data) {
@@ -46,9 +46,12 @@ export default createStore({
     
     }
   },
-  // getters: {
-  //   GetSpecificQuote: state => id => {
-  //     return state.quotes.filter(q => q._id == id)[0]
-  //   }
-  // }
+  getters: {
+    GetSpecificQuote: state => id => {
+      return state.quotes.filter(q => q._id == id)[0]
+    },
+    GetCups: state => status => {
+      return state.cups.filter(q => q.status == status)
+    }
+  }
 })

@@ -1,10 +1,10 @@
 <template>
   <div id="Navbar">
-    <div class="nav-item-custom" v-on:click="home">C$ Pro League</div>
+    <img id="Logo" src="../assets/logo.png" v-on:click="home">
     <div class="nav-item-custom" v-on:click="home">Home</div>
-    <div class="nav-item-custom" v-on:click="cup">Tournament Cups</div>
-    <div class="nav-item-custom" v-on:click="createCup">Create A Cup</div>
-
+    <div class="nav-item-custom" v-on:click="cup">Cups</div>
+<!--     <div class="nav-item-custom" v-on:click="createCup">Create A Cup</div>
+ -->
     <div id="NavbarRight" v-if="authenticated">
       <div v-on:click="dropdown" id="ProfileBox"> 
         <div id="ProfileName"> {{this.name}} </div>
@@ -64,7 +64,7 @@ export default {
       const env = process.env
       const HOST = env.VUE_APP_AUTH_HOST
       AuthenticationProperties.loginWithRedirect({
-        redirect_uri: HOST+'/'
+        redirect_uri: HOST+'/' 
       });
     },
     team () {
@@ -87,12 +87,20 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #Navbar {
     width: 100vw;
     height: 10vh;
     background-color: #007bff!important;
     display: flex;
+  }
+
+  #Logo {
+    height: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
   }
   
   #ProfileBox {
