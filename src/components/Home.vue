@@ -72,6 +72,9 @@ export default {
     width: 50%;
     overflow: auto;
   }
+  .header, .body {
+    color: black;
+  }
   .home-card-left {
   }
   .home-card-right {
