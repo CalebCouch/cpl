@@ -12,6 +12,9 @@ const CupsSchema = new mongoose.Schema({
     matchGenerator: String,
     status: String,
     createdBy: String,
-    createdAt: String
+    createdAt: String,
+    teams: Object,
+    winner: Object,
+    dual: Boolean
 })
 module.exports = mongoose.model('cup', CupsSchema)

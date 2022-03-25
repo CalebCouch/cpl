@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Cup = require('../models/Cups');
 const Discord = require("discord.js");
+const moment = require('moment')
 const config = require("../../discord.json")
 const client = new Discord.Client({intents: ["GUILD_MESSAGE_REACTIONS", "GUILDS", "GUILD_MESSAGES"], partials: ['MESSAGE', 'GUILD_MEMBER', 'CHANNEL', 'REACTION']});
 client.login(config.BOT_TOKEN);
@@ -30,13 +31,12 @@ router.post('/newPending', async (req, res) => {
 	await client.channels.cache.get('947559836286074924')
 	.send('Hello here!')
 	.then((message) => {
+		console.log(message)
 		message.react('👍').then(() => message.react('👎'));
 		const filter = (reaction, user) => {
 			return ['👍', '👎'].includes(reaction.emoji.name);
 		};
-
-		//moment.duration(1, "days")
-		message.awaitReactions({ filter, time: 10000})
+		message.awaitReactions({ filter, time: moment.duration(1, "minute").asMilliseconds()})
 		.then(collected => {
 			const yes = collected.first().count
 			const no = collected.last().count

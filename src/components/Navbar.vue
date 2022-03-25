@@ -50,8 +50,8 @@ export default {
     }
   },
   mounted() {
-    console.log(AuthenticationState)
-    console.log(AuthenticationProperties)
+    // console.log(AuthenticationState)
+    // console.log(AuthenticationProperties)
   },
   methods: {
     dropdown () {

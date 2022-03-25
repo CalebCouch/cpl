@@ -1,16 +1,12 @@
 <template>
-	<div id="CreateCup">
-		<form v-on:submit="submitCup" id="cupForm">
-			<div class="center-text">Submit a Cup</div>
+	<div id="CreateTeam">
+		<form v-on:submit="submitTeam" id="teamForm">
+			<div class="center-text">Create A Team</div>
 			<div class="form">
 				<div class="form-right">
 					<div class="mb-3">
 						<label for="name" class="form-label">Name</label>
 						<input type="text" class="form-control" name="name" v-model="name" id="name" required>
-					</div>
-					<div class="mb-3">
-						<label for="description" class="form-label">Description</label>
-						<input type="text" class="form-control" name="description" v-model="description" id="description" required>
 					</div>
 					<div class="mb-3" id="logoSelect">
 						<div>
@@ -26,65 +22,16 @@
 						</div>
 						<img id="logoImage" :src="'https://ucarecdn.com/'+this.logo+'/-/quality/smart/-/preview/640x640/image.jpg'" type="text/html">
 					</div>
-					<div class="mb-3">
-						<label for="prize" class="form-label">Prize</label>
-						<input type="text" class="form-control" name="prize" v-model="prize" id="prize" required>
-					</div>
-					<div class="mb-3">
-						<label for="startDate" class="form-label">Start Date</label>
-						<input type="date" class="form-control" name="startDate" v-model="startDate" id="startDate" :min="this.minDate()" required>
+					<div class="form-group mb-3">
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" name="dual" v-model="dual">
+							<label class="form-check-label" for="flexSwitchCheckDefault">Major leauge</label>
+						</div>
 					</div>
 					<button type="submit" style="margin-top: auto;" class="btn btn-primary">Submit</button>
 				</div>
 				<div class="form-left">
-					<div class="mb-3">
-						<label for="maps" class="form-label">Maps</label>
-						<select class="form-control mb-3" id="mapOption" name="mapOption" v-model="mapOption" required>
-							<option value="" disabled selected>Select Option</option>
-							<option>All Maps</option>
-							<option>Native Maps Only</option>
-							<option>Halo Maps Only</option>
-							<option>Black List Maps</option>
-							<option>White List Maps</option>
-						</select>
-						<div id="mapHide" style="display: none;">
-							<label for="maps" class="form-label" id="blackMaps" style="display: none;">Black Listed Maps</label>
-							<label for="maps" class="form-label" id="whiteMaps" style="display: none;">White Listed Maps</label>
-							<textarea style="resize: none;" type="text" class="form-control" name="maps" v-model="maps" id="maps" required></textarea>
-							<small id="mapsText" class="form-text text-muted">Please list maps one map per line.</small>
-						</div>
-					</div>
-					<div class="form-group mb-3">
-						<label for="teamSize">Team Size</label>
-						<select class="form-control" id="teamSize" name="teamSize" v-model="teamSize" required>
-							<option value="" disabled selected>Select Size</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-						</select>
-					</div>
-					<div class="mb-3">
-						<label for="prizeDistribution" class="form-label">Prize Distribution</label>
-						<textarea style="resize: none;" type="text" class="form-control" name="prizeDistribution" v-model="prizeDistribution" id="prizeDistribution" required></textarea>
-					</div>
-					<div class="form-group mb-3">
-						<label for="matchGeneration">Match Generation</label>
-						<select class="form-control" id="matchGeneration" name="matchGeneration" v-model="matchGeneration" required>
-							<option value="" disabled selected>Select Generation</option>
-							<option>Truly Random</option>
-						</select>
-					</div>
-					<div class="form-group mb-3">
-						<div class="form-check form-switch">
-							<input class="form-check-input" type="checkbox" name="dual" v-model="dual">
-							<label class="form-check-label" for="flexSwitchCheckDefault">Minor and Major leauge</label>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 		</form>
@@ -164,9 +111,8 @@ export default {
 			}
 		}
 	},
-	name: "CreateCup",
+	name: "CreateTeam",
 	mounted () {
-		// this.store.commit('GetAllCups');
 		uploadcare.registerTab('preview', uploadcareTabEffects)
 		const widget = uploadcare.Widget("[role=uploadcare-uploader]");
 
@@ -194,10 +140,10 @@ export default {
 		minDate() {
 			return moment().add(1, 'days').format('YYYY-MM-DD')
 		},
-		CreateCup() {
+		CreateTeam() {
 			console.log(this.store)
-			this.store.commit('SubmitCup', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: {}, winner: {}, dual: this.dual});
-			this.$router.push('/cup?name='+this.name)
+			this.store.commit('SubmitTeam', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: {}, winner: {}, dual: this.dual});
+			this.$router.push('/team?name='+this.name)
 		},
 		UpdateTextArea() {
 			const tx = document.getElementsByTagName("textarea");
@@ -205,21 +151,21 @@ export default {
 				tx[i].style.height = tx[i].scrollHeight+"px";
 			}
 		},
-		submitCup(evt) {
+		submitTeam(evt) {
 			evt.preventDefault()
-			this.CreateCup()
+			this.CreateTeam()
 		}
 	}
 };
 </script>
 
 <style scoped>
-	#CreateCup {
+	#CreateTeam {
 		width: 100%;
 		height: 100%;
 		overflow: auto;
 	}
-	#cupForm {
+	#teamForm {
 		width: 90%;
 		height: 90%;
 		margin: auto;
