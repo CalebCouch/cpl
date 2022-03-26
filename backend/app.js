@@ -46,6 +46,9 @@ app.use('/cups', CupsRoute)
 const UsersRoute = require('./routes/Users')
 app.use('/users', UsersRoute)
 
+const TeamsRoute = require('./routes/Teams')
+app.use('/teams', TeamsRoute)
+
 //start server
 app.listen(3000, ()=>{
     console.log("listening at port:3000")

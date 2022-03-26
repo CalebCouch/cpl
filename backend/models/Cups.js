@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Teams = require('./Teams')
 const CupsSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -12,9 +13,8 @@ const CupsSchema = new mongoose.Schema({
     matchGenerator: String,
     status: String,
     createdBy: String,
-    createdAt: String,
-    teams: Object,
-    winner: Object,
+    createdAt: { type: Date, default: Date.now },
+    winner: Array,
     dual: Boolean
 })
 module.exports = mongoose.model('cup', CupsSchema)

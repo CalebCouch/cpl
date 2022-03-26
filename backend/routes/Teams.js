@@ -1,24 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/Users');
+const Team = require('../models/Teams');
 
 // Get all routes
 router.get('/', async (req, res) => {
-	const user = await User.find();
-	res.json(user);
+	const teaem = await Team.find();
+	res.json(team);
 });
 
 // Create new quote
 router.post('/new', async (req, res) => {
-	const newUser = new User(req.body);
+	const newTeam = new Team(req.body);
 	
-	const savedUser = await newUser.save();
+	const savedTeam = await newTeam.save();
 
-	res.json(savedUser);
+	res.json(savedTeam);
 });
 
 router.patch('/update/:id', async (req, res) => {
-	const q = await User.updateOne({_id: req.params.id}, {$set: req.body});
+	const q = await Team.updateOne({_id: req.params.id}, {$set: req.body});
 	res.json(q);
 });
 

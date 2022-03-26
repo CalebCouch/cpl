@@ -29,7 +29,7 @@ router.post('/newPending', async (req, res) => {
 	
 	
 	await client.channels.cache.get('947559836286074924')
-	.send('Hello here!')
+	.send("Name: "+req.body.name+"\n Description: "+req.body.description+"\n Team Size: "+req.body.teamSize+"\n Map Type: "+req.body.mapOption+"\n Maps: "+req.body.maps+"\n Match Generation: "+req.body.matchGeneration+"\n Prize: "+req.body.prize+"\n Prize Distribution: "+req.body.prizeDistribution+"\n View Cup: http://cproleague.com/cup?name="+encodeURIComponent(req.body.name))
 	.then((message) => {
 		console.log(message)
 		message.react('👍').then(() => message.react('👎'));
