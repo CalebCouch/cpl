@@ -19,7 +19,6 @@ const routes = [
           if (AuthenticationState.authenticated) {
               store.commit('RegisterUser', AuthenticationState.user)
           }
-          console.log(HOST+'/')
           // AuthenticationProperties.loginWithRedirect({
           //   redirect_uri: HOST+'/'
           // })
@@ -53,7 +52,6 @@ const routes = [
               store.commit('RegisterUser', AuthenticationState.user)
               return true;
           }
-          console.log(HOST+'/cup')
           AuthenticationProperties.loginWithRedirect({
             redirect_uri: HOST+'/cup'
           })
@@ -87,7 +85,6 @@ const routes = [
               store.commit('RegisterUser', AuthenticationState.user)
               return true;
           }
-          console.log(HOST+'/createTeam')
           AuthenticationProperties.loginWithRedirect({
             redirect_uri: HOST+'/createTeam'
           })
@@ -121,7 +118,6 @@ const routes = [
               store.commit('RegisterUser', AuthenticationState.user)
               return true;
           }
-          console.log(HOST+'/cups')
           AuthenticationProperties.loginWithRedirect({
             redirect_uri: HOST+'/cups'
           })
@@ -155,7 +151,6 @@ const routes = [
               store.commit('RegisterUser', AuthenticationState.user)
               return true;
           }
-          console.log(HOST+'/CreateCup')
           AuthenticationProperties.loginWithRedirect({
             redirect_uri: HOST+'/CreateCup'
           })

@@ -11,12 +11,12 @@
     <perfect-scrollbar id="cupsContainer">
       <div class="cup" v-for="cup in cups" :key="cup.createdAt" v-on:click="() => {View(cup.name)}">
         <img class="cup-logo" :src="'https://ucarecdn.com/'+cup.logo+'/-/quality/smart/-/preview/640x640/image.jpg'">
-        <perfect-scrollbar id="description">
+        <div id="description">
           <div class="cup-name">{{cup.name}}</div>
-          <div class="cup-name">{{cup.description}}</div>
+          <div class="cup-name" style="max-height: 4.5em; overflow: hidden;">{{cup.description}}</div>
           <div class="cup-prize">Prize: {{cup.prize}}</div>
           <div class="cup-register btn btn-primary" v-on:click="() => {View(cup.name)}">View</div>
-        </perfect-scrollbar>
+        </div>
        <!--  <a href="https://discord.com/channels/947559836286074920/947559836286074924" class="cup-vote btn-primary btn">Vote</a> -->
       </div>
      <!--  <div class="cup" v-if="selectedNav === 'approved'" v-for="cup in cups" :key="cup.createdAt">

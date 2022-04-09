@@ -7,9 +7,11 @@ console.log(env)
 
 export default createStore({
   state: {
-    cup: {},
+    currentCup: undefined,
     cups: [],
+    teams: [],
     users: [],
+    invites: [],
     nav: 'approved'
   },
   mutations: {
@@ -26,15 +28,17 @@ export default createStore({
     //     });
     // },
     SelectCup (state, name) {
-      fetch(HOST+"/cups")
-        .then(res => res.json())
-        .then(data => {
-          state.cups = data;
-          state.cup = state.cups.filter(q => q.name == name)[0]
-        })
+      state.currentCup = name
     },
     ChangeNav (state, data) {
       state.nav = data
+    },
+    GetAllTeams (state) {
+      fetch(HOST+"/teams")
+        .then(res => res.json())
+        .then(data => {
+          state.teams = data;
+        });
     },
     GetAllCups (state) {
       fetch(HOST+"/cups")
@@ -50,8 +54,14 @@ export default createStore({
           state.users = data;
         });
     },
+    GetAllInvites (state) {
+      fetch(HOST+"/invites")
+        .then(res => res.json())
+        .then(data => {
+          state.invites = data;
+        });
+    },
     RegisterUser (state, data) {
-      console.log("test")
       fetch(HOST+"/users")
         .then(res => res.json())
         .then(datares => {
@@ -106,6 +116,46 @@ export default createStore({
           state.cups = datares;
         }));
     
+    },
+    SubmitTeam (state, data) {
+      const team = data.team
+      const invites = data.invites
+      fetch(HOST+"/teams/new", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify(team)
+    }).then(res => {
+      console.log("Request complete! response:", res);
+    }).then(
+      setTimeout(() => {
+        fetch(HOST+"/teams")
+          .then(res => res.json())
+          .then(datares => {
+            state.teams = datares;
+            console.log(datares)
+            const teaminv = datares.filter(a => {console.log(a.name === team.name); console.log(a.name); console.log(team.name); return a.name === team.name})[0]
+            console.log(teaminv)
+            for (let i = 0; i < invites.length; i++) {
+              this.commit('SubmitInvite', {cupId: teaminv.cupId, teamId: teaminv._id, teamName: teaminv.name, teamLogo: teaminv.logo, userId: invites[i]});
+            }
+          })
+      }, 100));
+    
+    },
+    SubmitInvite (state, data) {
+      fetch(HOST+"/invites/new", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'}, 
+      body: JSON.stringify(data)
+    }).then(res => {
+      console.log("Request complete! response:", res);
+    }).then(
+    fetch(HOST+"/invites")
+        .then(res => res.json())
+        .then(datares => {
+          state.invites = datares;
+        }));
+    
     }
   },
   getters: {
@@ -115,7 +165,7 @@ export default createStore({
     GetCups: state => () => {
       let cups = []
       if (state.nav == 'complete') {
-        cups = state.cups.filter(q => q.status == state.nav)
+        cups = state.cups.filter(q => q.status == 'complete')
       } else {
         cups = state.cups.filter(q => q.status != 'complete')
       }
@@ -125,7 +175,13 @@ export default createStore({
       return state.users
     },
     GetCup: state => () => {
-      return state.cup
+      return state.cups.filter(a => a.name === state.currentCup)[0]
+    },
+    GetTeams: state => (id) => {
+      return state.teams.filter(a => a.cupId == id)
+    },
+    GetInvites: state => (id, id2) => {
+      return state.invites.filter(a => a.userId == id && a.cupId == id2)
     }
   }
 })

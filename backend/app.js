@@ -49,6 +49,9 @@ app.use('/users', UsersRoute)
 const TeamsRoute = require('./routes/Teams')
 app.use('/teams', TeamsRoute)
 
+const InvitesRoute = require('./routes/Invites')
+app.use('/invites', InvitesRoute)
+
 //start server
 app.listen(3000, ()=>{
     console.log("listening at port:3000")
@@ -60,9 +63,11 @@ async function bouncy () {
 	var current = moment()
   	for (let i = 0; i < cups.length; i++) {
   		const cup = cups[i]
-    	const timeLeft = moment.duration(moment(cup.startDate, "YYYY-MM-DD").diff(current))
-    	if (timeLeft._milliseconds <= 0) {
+    	const timeLeft = moment.duration(moment(cup.startDate, "YYYY-MM-DD").diff(current))._milliseconds
+    	if (parseInt(timeLeft) < 0 && cup.status == "approved") {
     		Cup.updateOne({_id: cup._id}, {$set: {status: "started"}});
+    		const q = await Cup.updateOne({_id: cup.id}, {$set: {status: "started"}});
+			console.log(q)
     	}
   	}
 	setTimeout(() => {bouncy()}, 1000)

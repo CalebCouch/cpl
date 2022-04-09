@@ -11,10 +11,14 @@ import { AuthenticationState } from 'vue-auth0-plugin';
 
 
 const bouncy = () => {
+	console.log(AuthenticationState)
 	if (!AuthenticationState.loading){
 		store.commit("GetAllCups")
+		store.commit("GetAllTeams")
+		store.commit("GetAllUsers")
+		store.commit("GetAllInvites")
 	} 
-	setTimeout(() => {bouncy()}, 100)
+	setTimeout(() => {bouncy()}, 1000)
 }
 bouncy()
 

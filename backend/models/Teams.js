@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const User = require('./Users')
 const TeamsSchema = new mongoose.Schema({
 	cupId: String,
     name: String,

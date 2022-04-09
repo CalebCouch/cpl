@@ -4,7 +4,7 @@ const Team = require('../models/Teams');
 
 // Get all routes
 router.get('/', async (req, res) => {
-	const teaem = await Team.find();
+	const team = await Team.find();
 	res.json(team);
 });
 

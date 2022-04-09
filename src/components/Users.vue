@@ -1,96 +1,86 @@
 <template>
   <div id="User">
-    <div class="user" v-for="user in users">
-      {{user.name}}
+    <div class="user" :key="user.name" v-for="(user,i) in users" :class="i/2 == 0 ? 'gray' : ''">
+      <img class="picture" :src="user.picture">
+      <div class="username">{{user.name}}</div>
+      <div class="invitewraper">
+        <div class="invite btn btn-primary" v-on:click="(evt) => {AddInvite(evt, user.id)}">Invite</div>
+      </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
-// import moment from 'moment'
 export default {
   name: 'User',
   setup () {
-    // const route = useRoute();
     const store = useStore();
-    // const quote = ref({});
-    
     return {
       store
     }
   },
-  mounted() {
-    let urlParams = new URLSearchParams(window.location.search);
-    let name = urlParams.get('name');
-    if (name != undefined) {
-      this.store.commit("SelectCup", name)
-    }
-  },
-  methods: {
-   createTeam() {
-      this.$router.push('/createTeam')
-    },
-  },
   computed: {
     users() {
       return this.store.getters.GetUsers()
+    }
+  },
+  methods: {
+    AddInvite(evt, id) {
+      evt.target.classList.remove("btn-primary") 
+      evt.target.classList.add("btn-outline-primary") 
+      evt.target.classList.add("invited")
+      evt.target.textContent = "Invited"
+      evt.target.disabled = true
+      this.$emit('clicked', id)
     }
   }
 };
 </script>
 
 <style scoped>
-  #Cup {
-    width: 90%;
-    height: 90%;
-    margin: auto;
-    margin-top: 4.5%;
-    box-shadow: 0px 0px 3px 3px lightgray;
+  #User {
+    width: 100%;
+    height: 100%;
   }
-  #cupHeader {
+  .invited {
+    pointer-events: none;
+  }
+  .user {
+    width: 100%;
     height: 10%;
-    width: 100%;
-    background-color: #006bde!important;
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    padding: 2.5%;
   }
-  #cupLogo {
-    height: 50%;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: 1.5rem;
-    margin-left: 1.5rem;
+  .gray {
+    background-color: lightgray;
   }
-  #cupBody {
-    width: 100%;
-    height: 90%;
-  }
-  #cupTeams {
-    height: 100%;
-    width: 100%;
-  }
-  #cupVote {
-    width: 100%;
-    height: 100%;
+  .username {
+    margin-left: 5%;
     display: flex;
+    justify-content: center;
+    align-content: center;
     flex-direction: column;
   }
-  #createTeam {
+  .invitewraper {
     margin-left: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-right: 2.5%;
   }
-  
-  .cup-vote {
-    margin-left: auto;
-    margin-right: auto;
+  /*.invite {
+    margin-top: 20%;
+  }*/
+ /* .picturewrap {
+    height: 90%;
+  }*/
+  .picture {
+    height: 100%;
+    box-shadow: 0px 0px 0px 2px lightgray;
   }
-  .nav-item-custom {
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    margin-top: auto;
-    margin-bottom: auto;
-    color: white;
-    cursor: pointer;
-  }
-
 </style>

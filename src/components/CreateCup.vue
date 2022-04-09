@@ -7,6 +7,7 @@
 					<div class="mb-3">
 						<label for="name" class="form-label">Name</label>
 						<input type="text" class="form-control" name="name" v-model="name" id="name" required>
+						<label for="name" class="form-label" style="color: red;" :style="cups.filter(a => a.name == name).length === 0 ? 'display: none;' : ''">This name is taken</label>
 					</div>
 					<div class="mb-3">
 						<label for="description" class="form-label">Description</label>
@@ -34,7 +35,7 @@
 						<label for="startDate" class="form-label">Start Date</label>
 						<input type="date" class="form-control" name="startDate" v-model="startDate" id="startDate" :min="this.minDate()" required>
 					</div>
-					<button type="submit" style="margin-top: auto;" class="btn btn-primary">Submit</button>
+					<button type="submit" style="margin-top: auto;" :disabled="cups.filter(a => a.name == name).length === 0 ? false : true" class="btn btn-primary">Submit</button>
 				</div>
 				<div class="form-left">
 					<div class="mb-3">
@@ -132,7 +133,9 @@ export default {
 			prizeDistribution: '',
 			text: '',
 			discordText: '',
-			dual: false
+			dual: false,
+			nameError: false,
+			logoError: false
 		}
 	},
 	watch: {
@@ -173,31 +176,27 @@ export default {
 		widget.onUploadComplete(fileInfo => {
 			this.logo = fileInfo.uuid
 		});
-		// const UPLOADCARE_LOCALE_TRANSLATIONS = {
-		// 	buttons: {
-		// 		choose: {
-		// 			files: {
-		// 				one: 'Upload Image'
-		// 			}
-		// 		}
-		// 	}
-		// }
-		
 		const tx = document.getElementsByTagName("textarea");
 		for (let i = 0; i < tx.length; i++) {
 			tx[i].style.height = '20px'
 		}
+		this.store.commit('ChangeNav', 'all')
 	},
 	computed: {
+		cups() {
+			return this.store.getters.GetCups()
+		}
 	},
 	methods: {
 		minDate() {
 			return moment().add(1, 'days').format('YYYY-MM-DD')
 		},
 		CreateCup() {
-			console.log(this.store)
-			this.store.commit('SubmitCup', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: [], winner:[], dual: this.dual});
+			const team = {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: [], winner:[], dual: this.dual}
+			// this.store.getters.UniqueCup(team)
+			this.store.commit('SubmitCup', team);
 			this.$router.push('/cup?name='+this.name)
+			
 		},
 		UpdateTextArea() {
 			const tx = document.getElementsByTagName("textarea");

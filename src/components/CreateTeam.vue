@@ -22,16 +22,16 @@
 						</div>
 						<img id="logoImage" :src="'https://ucarecdn.com/'+this.logo+'/-/quality/smart/-/preview/640x640/image.jpg'" type="text/html">
 					</div>
-					<div class="form-group mb-3">
+					<div class="form-group mb-3" v-if="cup.dual">
 						<div class="form-check form-switch">
-							<input class="form-check-input" type="checkbox" name="dual" v-model="dual">
+							<input class="form-check-input" type="checkbox" name="major" v-model="major">
 							<label class="form-check-label" for="flexSwitchCheckDefault">Major leauge</label>
 						</div>
 					</div>
 					<button type="submit" style="margin-top: auto;" class="btn btn-primary">Submit</button>
 				</div>
 				<div class="form-left">
-					
+					<Users @clicked="AddInvite"></Users>
 				</div>
 			</div>
 		</form>
@@ -41,9 +41,9 @@
 
 <script>
 import { useStore } from 'vuex';
+import Users from './Users'
 // import { useRoute } from 'vue-router';
 // import { ref, onMounted } from 'vue';
-import moment from 'moment'
 import uploadcare from 'uploadcare-widget/uploadcare.lang.en.min.js'
 import uploadcareTabEffects from 'uploadcare-widget-tab-effects/dist/uploadcare.tab-effects.lang.en.min.js'
 import { AuthenticationState } from 'vue-auth0-plugin';
@@ -64,92 +64,46 @@ export default {
 			// route
 		}
 	},
+	components: {
+		Users
+	},
 	data () {
 		return {
-			name: '',
-			description: '',
-			maps: '',
-			logo: '',
-			mapOption: '',
-			mapText: '',
-			prize: '',
-			startDate: '',
-			teamSize: '',
-			matchGeneration: '',
-			prizeDistribution: '',
-			text: '',
-			discordText: '',
-			dual: false
-		}
-	},
-	watch: {
-		prizeDistribution() {
-			setTimeout(() => {this.UpdateTextArea()}, 10)
-		},
-		maps() {
-			setTimeout(() => {this.UpdateTextArea()}, 10)
-		},
-		mapOption (option) {
-			if (option == 'Black List Maps')   {
-				document.getElementById('mapHide').style.display = 'block'
-				document.getElementById('blackMaps').style.display = 'block'
-				document.getElementById('whiteMaps').style.display = 'none'
-				this.mapText = ' Black Listed:'
-				this.maps = ''
-			} else if (option == 'White List Maps'){
-				document.getElementById('mapHide').style.display = 'block'
-				document.getElementById('whiteMaps').style.display = 'block'
-				document.getElementById('blackMaps').style.display = 'none'
-				this.mapText = ' White Listed:'
-				this.maps = ''
-			} else {
-				document.getElementById('mapHide').style.display = 'none'
-				document.getElementById('blackMaps').style.display = 'none'
-				document.getElementById('whiteMaps').style.display = 'none'
-				this.maps = this.mapOption
-				this.mapText = ''
-			}
+			invites: [],
+			major: false,
+			name: "",
+			logo: ""
+
 		}
 	},
 	name: "CreateTeam",
 	mounted () {
+		let urlParams = new URLSearchParams(window.location.search);
+		let name = urlParams.get('name');
+		if (name != undefined) {
+			this.store.commit("SelectCup", name)
+		}
 		uploadcare.registerTab('preview', uploadcareTabEffects)
 		const widget = uploadcare.Widget("[role=uploadcare-uploader]");
 
 		widget.onUploadComplete(fileInfo => {
 			this.logo = fileInfo.uuid
 		});
-		// const UPLOADCARE_LOCALE_TRANSLATIONS = {
-		// 	buttons: {
-		// 		choose: {
-		// 			files: {
-		// 				one: 'Upload Image'
-		// 			}
-		// 		}
-		// 	}
-		// }
-		
-		const tx = document.getElementsByTagName("textarea");
-		for (let i = 0; i < tx.length; i++) {
-			tx[i].style.height = '20px'
-		}
 	},
 	computed: {
+		cup() {
+			return this.store.getters.GetCup() != {} ? this.store.getters.GetCup() : {status: null}
+		}
 	},
 	methods: {
-		minDate() {
-			return moment().add(1, 'days').format('YYYY-MM-DD')
+		AddInvite(id) {
+			this.invites.push(id)
 		},
 		CreateTeam() {
-			console.log(this.store)
-			this.store.commit('SubmitTeam', {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: {}, winner: {}, dual: this.dual});
+			console.log(this.invites)
+			this.store.commit('SubmitTeam', {team: {cupId: this.cup._id, name: this.name, logo: this.logo, major: this.major, members: [], leader: AuthenticationState.user.sub},
+			invites: this.invites});
 			this.$router.push('/team?name='+this.name)
-		},
-		UpdateTextArea() {
-			const tx = document.getElementsByTagName("textarea");
-			for (let i = 0; i < tx.length; i++) {
-				tx[i].style.height = tx[i].scrollHeight+"px";
-			}
 		},
 		submitTeam(evt) {
 			evt.preventDefault()
