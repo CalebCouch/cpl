@@ -169,6 +169,7 @@ export default {
 	},
 	name: "CreateCup",
 	mounted () {
+		console.log(moment("04-23-2003"))
 		// this.store.commit('GetAllCups');
 		uploadcare.registerTab('preview', uploadcareTabEffects)
 		const widget = uploadcare.Widget("[role=uploadcare-uploader]");
@@ -192,7 +193,7 @@ export default {
 			return moment().add(1, 'days').format('YYYY-MM-DD')
 		},
 		CreateCup() {
-			const team = {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: this.startDate, mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: [], winner:[], dual: this.dual}
+			const team = {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: moment(this.startDate).format('YYYY-MM-DD'), mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: [], winner:[], dual: this.dual}
 			// this.store.getters.UniqueCup(team)
 			this.store.commit('SubmitCup', team);
 			this.$router.push('/cup?name='+this.name)
