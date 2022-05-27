@@ -1,13 +1,16 @@
 <template>
   <div id="Cup">
-    <div id="cupHeader" v-if="!error && cup != undefined">
-      <img id="cupLogo" :src=" cup != undefined ? 'https://ucarecdn.com/'+cup.logo+'/-/quality/smart/-/preview/640x640/image.jpg' : ''" type="text/html">
+    <div id="cupHeader" v-if="error == undefined && cup != undefined">
+      <img id="cupLogo" :src="'https://ucarecdn.com/'+cup.logo+'/-/quality/smart/-/preview/640x640/image.jpg'" type="text/html">
       <div class="nav-item-custom" style="cursor: default; margin-right: 0.25em">{{cup.name}}</div>
       <div class="nav-item-custom" style="cursor: default;">{{timeLeft}}</div>
+      <div style="margin-left: auto; margin-right: 1em" class="nav-item-custom" v-on:click="back">back</div>
     </div>
-    <div id="cupBody" :style="error ? 'display: flex; align-items: center; justify-content: center;' : ''">
-      <div v-on:click="back" style="cursor: pointer;" v-if="error || cup == undefined">{{error}}</div>
-      <div v-else-if="cup.status == 'pending'" id="cupVote">
+    <div class="errorContainer" v-if="error != undefined || cup == undefined">
+      <div v-on:click="back" style="cursor: pointer;">{{error}}</div>
+    </div>
+    <div id="cupBody" v-else>
+      <div v-if="cup.status == 'pending'" id="cupVote">
         <p style="padding: 5%;">This cup is still pending click the Vote button bellow to vote on the discord channel.</p>
         <a href="https://discord.com/channels/947559836286074920/947559836286074924" class="cup-vote btn-primary btn" target="_blank">Vote</a>
       </div>
@@ -21,10 +24,16 @@
           <img class="picture" :src="'https://ucarecdn.com/'+team.logo+'/-/quality/smart/-/preview/640x640/image.jpg'">
           <div class="username">{{team.name}}</div>
           <div class="invitewraper">
-            <div class="invite btn btn-primary" v-if="team.leader === AuthenticationState.user.sub" v-on:click="(evt) => {viewTeam(team.id)}">View</div>
+            <div class="invite btn btn-primary" v-if="team.leader === AuthenticationState.user.sub" v-on:click="(evt) => {viewTeam(team._id)}">View</div>
           </div>
         </perfect-scrollbar>
-        <perfect-scrollbar v-if="selectedNav == 'my-invites'" v-for="invite in invites" v-bind:key="invite.teamId">{{invite.teamName}}</perfect-scrollbar>
+        <perfect-scrollbar v-if="selectedNav == 'my-invites'" class="invites" v-for="invite in invites" v-bind:key="invite.teamId">
+          <img class="picture" :src="'https://ucarecdn.com/'+invite.teamLogo+'/-/quality/smart/-/preview/640x640/image.jpg'">
+          <div class="username">{{invite.teamName}}</div>
+          <div class="invitewraper">
+            <div class="invite btn btn-primary" v-on:click="(evt) => {AcceptInvite(invite.userId, invite.teamId, invite._id)}">Accept</div>
+          </div>
+      </perfect-scrollbar>
       </div>
       <div v-else-if="cup.status == 'started'" id="cupTeams">
         cups started
@@ -52,22 +61,16 @@ export default {
   },
   data () {
     return {
-     error: "",
      selectedNav: 'registered-teams',
     }
   },
   mounted() {
     let urlParams = new URLSearchParams(window.location.search);
-    let name = urlParams.get('name');
-    if (name != null) {
-      this.store.commit("SelectCup", name)
-      setTimeout(() => {
-        if (this.store.state.currentCup === undefined) {
-          this.error = "This cup could not be found click here to view all cups"
-        }
-      }, 1000)
+    let id = urlParams.get('cupId');
+    if (id != null) {
+      this.store.commit("SelectCup", id)
     } else {
-      this.error = "This cup could not be found click here to view all cups"
+      this.back()
     }
   },
   methods: {
@@ -81,12 +84,25 @@ export default {
       this.$router.push('/cups')
     },
     createTeam() {
-      this.$router.push('/createTeam?name='+this.cup.name)
+      this.$router.push('/createTeam?cupId='+this.cup._id)
     },
+    viewTeam(teamId) {
+      this.$router.push('/Team?cupId='+this.cup._id+'&teamId='+teamId)
+    },
+    AcceptInvite(userId, teamId, Id) {
+      this.store.dispatch("AcceptInvite", {'userId': userId, 'teamId': teamId, 'Id': Id})
+    }
+
   },
   computed: {
     cup() {
       return this.store.getters.GetCup()
+    },
+    error() {
+      if (this.cup == {}) {
+        return "This cup could not be found click here to view all cups"
+      }
+      return undefined
     },
     timeLeft() {
       const localCup = this.store.getters.GetCup()
@@ -94,10 +110,10 @@ export default {
       return  localCup != {} ? moment.duration(moment(localCup.startDate, "YYYY-MM-DD").diff(current))._milliseconds : 0
     },
     teams() {
-      return this.store.getters.GetTeams(this.cup._id)
+      return this.store.getters.GetTeams()
     },
     invites() {
-      return this.store.getters.GetInvites(AuthenticationState.user.sub, this.cup._id)
+      return this.store.getters.GetInvites(AuthenticationState.user.sub)
     }
     // state() {
     //   var current = moment()
@@ -136,6 +152,13 @@ export default {
     width: 100%;
     height: 90%;
   }
+  .errorContainer {
+    width: 100%;
+    height: 90%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
   #cupTeams {
     height: 100%;
     width: 100%;
@@ -159,6 +182,15 @@ export default {
     background-color: lightgray;
   }
   .teams {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    padding: 2.5%;
+  }
+  .invites {
     width: 100%;
     height: 10%;
     display: flex;

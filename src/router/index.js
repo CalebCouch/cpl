@@ -75,6 +75,40 @@ const routes = [
     }
   },
   {
+    path: '/team',
+    name: 'team',
+    component: () => import('../components/Team.vue'),
+    beforeEnter: () => {
+    // define verify method for later use
+      const verify = async () => {
+          if (AuthenticationState.authenticated) {
+              store.commit('RegisterUser', AuthenticationState.user)
+              // if (AuthenticationState.user.sub == store.state.)
+              return true;
+          }
+          AuthenticationProperties.loginWithRedirect({
+            redirect_uri: HOST+'/team'
+          })
+          return false;
+      };
+
+      // if not loading, verify request
+      if (!AuthenticationState.loading) {
+          return verify();
+      }
+
+      // if loading, watch for loading property to change and then verify
+      return new Promise ((resolve) => {
+          const unwatch = watch(() => AuthenticationState.loading, async () => {
+              if (!AuthenticationState.loading) {
+                  unwatch();
+                  resolve(verify());
+              }
+          });
+      });
+    }
+  },
+  {
     path: '/createTeam',
     name: 'createTeam',
     component: () => import('../components/CreateTeam.vue'),

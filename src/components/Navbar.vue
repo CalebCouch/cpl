@@ -114,7 +114,6 @@ export default {
     display: flex;
   }
   #ProfileImage {
-    height: 100%;
     box-shadow: 0px 0px 0px 2px lightgray;
   }
   #ProfileName {

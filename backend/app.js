@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 
 const uri = env.mongoUri;
 mongoose.connect(uri, {
+    keepAlive: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

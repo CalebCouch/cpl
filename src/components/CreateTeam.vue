@@ -1,6 +1,6 @@
 <template>
 	<div id="CreateTeam">
-		<form v-on:submit="submitTeam" id="teamForm">
+		<form v-on:submit="submitTeam" v-if="cup != undefined" id="teamForm">
 			<div class="center-text">Create A Team</div>
 			<div class="form">
 				<div class="form-right">
@@ -73,29 +73,36 @@ export default {
 			major: false,
 			name: "",
 			logo: ""
-
 		}
 	},
 	name: "CreateTeam",
 	mounted () {
 		let urlParams = new URLSearchParams(window.location.search);
-		let name = urlParams.get('name');
-		if (name != undefined) {
-			this.store.commit("SelectCup", name)
+		let cupId = urlParams.get('cupId');
+		if (cupId != undefined) {
+			this.store.commit("SelectCup", cupId)
 		}
-		uploadcare.registerTab('preview', uploadcareTabEffects)
-		const widget = uploadcare.Widget("[role=uploadcare-uploader]");
-
-		widget.onUploadComplete(fileInfo => {
-			this.logo = fileInfo.uuid
-		});
 	},
 	computed: {
 		cup() {
-			return this.store.getters.GetCup() != {} ? this.store.getters.GetCup() : {status: null}
-		}
+			return this.store.getters.GetCup()
+		},
+		error() {
+			if (this.cup == {}) {
+				return "This cup could not be found click here to view all cups"
+			}
+			return undefined
+		},
 	},
 	methods: {
+		StartWidget() {
+			uploadcare.registerTab('preview', uploadcareTabEffects)
+			const widget = uploadcare.Widget("[role=uploadcare-uploader]");
+
+			widget.onUploadComplete(fileInfo => {
+				this.logo = fileInfo.uuid
+			});
+		},
 		AddInvite(id) {
 			this.invites.push(id)
 		},

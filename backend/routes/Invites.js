@@ -23,4 +23,10 @@ router.patch('/update/:id', async (req, res) => {
 	res.json(q);
 });
 
+router.delete('/delete/:id', async (req, res) => {
+	const q = await Invite.deleteOne({_id: req.params.id});
+	res.json(q);
+});
+
+
 module.exports = router;

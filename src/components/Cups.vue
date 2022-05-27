@@ -3,19 +3,20 @@
     <div id="miniNav">
    <!--    <div v-on:click="(evt) => {setNav(evt, 'pending')}" class="nav-item-custom">Pending Cups</div>
       <div v-on:click="(evt) => {setNav(evt, 'approved')}" class="selected nav-item-custom">Approved Cups</div> -->
-      <div v-on:click="(evt) => {setNav(evt, 'active')}" class="selected nav-item-custom">Active Cups</div>
-      <div v-on:click="(evt) => {setNav(evt, 'complete')}" class="nav-item-custom">Compleated Cups</div>
+      <div id="pending" v-on:click="(evt) => {setNav(evt, 'pending')}" class="nav-item-custom">Pending Cups</div>
+      <div id="active" v-on:click="(evt) => {setNav(evt, 'active')}" class="selected nav-item-custom">Active Cups</div>
+      <div id="completed" v-on:click="(evt) => {setNav(evt, 'complete')}" class="nav-item-custom">Compleated Cups</div>
       <div v-on:click="createCup" style="margin-left: auto; color: white; background-color:gray;" class="nav-item-custom">Create Cup</div>
     </div>
 
     <perfect-scrollbar id="cupsContainer">
-      <div class="cup" v-for="cup in cups" :key="cup.createdAt" v-on:click="() => {View(cup.name)}">
+      <div class="cup" v-for="cup in cups" :key="cup.createdAt" v-on:click="() => {ViewCup(cup._id)}">
         <img class="cup-logo" :src="'https://ucarecdn.com/'+cup.logo+'/-/quality/smart/-/preview/640x640/image.jpg'">
         <div id="description">
           <div class="cup-name">{{cup.name}}</div>
           <div class="cup-name" style="max-height: 4.5em; overflow: hidden;">{{cup.description}}</div>
           <div class="cup-prize">Prize: {{cup.prize}}</div>
-          <div class="cup-register btn btn-primary" v-on:click="() => {View(cup.name)}">View</div>
+          <div class="cup-register btn btn-primary" v-on:click="() => {ViewCup(cup._id)}">View</div>
         </div>
        <!--  <a href="https://discord.com/channels/947559836286074920/947559836286074924" class="cup-vote btn-primary btn">Vote</a> -->
       </div>
@@ -42,30 +43,34 @@ export default {
     
     return {
       store,
-      selectedNav: 'approved',
       cupsStartDate: {},
       // route
     }
   },
   mounted() {
     this.store.commit('GetAllCups')
+    Array.from(document.getElementsByClassName('selected')).forEach(a => a.classList.remove('selected'))
+    document.getElementById(this.selectedNav).classList.add('selected')
+    
   },
   computed: {
     cups() {
       return this.store.getters.GetCups()
+    },
+    selectedNav() {
+      return this.store.getters.GetNav()
     }
   },
   methods: {
-    View(name) {
-      this.store.commit('SelectCup', name)
-      this.$router.push('/cup?name='+name)
+    ViewCup(id) {
+      this.store.commit('SelectCup', id)
+      this.$router.push('/cup?cupId='+id)
     },
     createCup() {
       this.$router.push('/createCup')
     },
     setNav (evt, id) {
       Array.from(document.getElementsByClassName('selected')).forEach(a => a.classList.remove('selected'))
-      this.selectedNav = id
       evt.target.classList.add('selected')
       this.store.commit('ChangeNav', id)
     }

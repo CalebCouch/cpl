@@ -194,9 +194,11 @@ export default {
 		},
 		CreateCup() {
 			const team = {name: this.name, description: this.description, logo: this.logo, prize: this.prize, startDate: moment(this.startDate).format('YYYY-MM-DD'), mapOption: this.mapOption, maps: this.maps, teamSize: this.teamSize, prizeDistribution: this.prizeDistribution, matchGeneration: this.matchGeneration, status: "pending", createdBy: AuthenticationState.user.sub, createdAt: moment(), teams: [], winner:[], dual: this.dual}
-			// this.store.getters.UniqueCup(team)
 			this.store.commit('SubmitCup', team);
-			this.$router.push('/cup?name='+this.name)
+			// const cupId = this.store.getters.getNewCupId()
+			this.store.commit('SubmitCup', team);
+			this.store.commit('ChangeNav', 'pending')
+			this.$router.push('/cups')
 			
 		},
 		UpdateTextArea() {

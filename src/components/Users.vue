@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     users() {
-      return this.store.getters.GetUsers()
+      return this.store.getters.GetNonTeamUsers()
     }
   },
   methods: {

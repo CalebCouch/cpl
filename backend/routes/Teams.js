@@ -18,6 +18,8 @@ router.post('/new', async (req, res) => {
 });
 
 router.patch('/update/:id', async (req, res) => {
+	console.log("highanonet")
+	console.log(req.body)
 	const q = await Team.updateOne({_id: req.params.id}, {$set: req.body});
 	res.json(q);
 });
