@@ -4,6 +4,12 @@
       <img id="cupLogo" :src="'https://ucarecdn.com/'+cup.logo+'/-/quality/smart/-/preview/640x640/image.jpg'" type="text/html">
       <div class="nav-item-custom" style="cursor: default; margin-right: 0.25em">{{cup.name}}</div>
       <div class="nav-item-custom" style="cursor: default;">{{timeLeft}}</div>
+      <div id="navContainer"> 
+         <b-dropdown id="dropdown-1" :text="'View: '+selectedNav" variant="primary" class="m-md-2">
+          <b-dropdown-item v-on:click="(evt) => {setNav(evt, 'my-invites')}" >My Invites</b-dropdown-item>
+          <b-dropdown-item v-on:click="(evt) => {setNav(evt, 'registered-teams')}">Registered Teams</b-dropdown-item>
+        </b-dropdown>
+      </div>
       <div style="margin-left: auto; margin-right: 1em" class="nav-item-custom" v-on:click="back">back</div>
     </div>
     <div class="errorContainer" v-if="error != undefined || cup == undefined">
@@ -15,10 +21,16 @@
         <a href="https://discord.com/channels/947559836286074920/947559836286074924" class="cup-vote btn-primary btn" target="_blank">Vote</a>
       </div>
       <div v-else-if="cup.status == 'approved'" id="cupTeams">
-        <div id="miniNav">
+        <!-- <div id="miniNav">
           <div v-on:click="(evt) => {setNav(evt, 'registered-teams')}" class="selected mini-nav-item-custom">Registered Teams</div>
           <div v-on:click="(evt) => {setNav(evt, 'my-invites')}" class="mini-nav-item-custom">My Invites</div>
           <div v-on:click="createTeam" style="margin-left: auto; color: white; background-color:gray;" class="mini-nav-item-custom">Create Team</div>
+        </div> -->
+        <div id="miniNav">
+          <div id="navContainer">
+            <div v-on:click="createTeam" style="margin-right: auto; color: black;" class="nav-item-custom">Create Team</div>
+           
+          </div>
         </div>
         <perfect-scrollbar v-if="selectedNav == 'registered-teams'" class="teams" :key="team.name" v-for="(team,i) in teams" :class="i/2 != 0 ? 'gray' : ''">
           <img class="picture" :src="'https://ucarecdn.com/'+team.logo+'/-/quality/smart/-/preview/640x640/image.jpg'">
@@ -127,11 +139,11 @@ export default {
 
 <style scoped>
   #Cup {
-    width: 90%;
-    height: 90%;
-    margin: auto;
-    margin-top: 4.5%;
-    box-shadow: 0px 0px 3px 3px lightgray;
+    width: 100%;
+    height: 100%;
+    /*margin: auto;*/
+    /*margin-top: 4.5%;*/
+    /*box-shadow: 0px 0px 3px 3px lightgray;*/
   }
   #cupHeader {
     height: 10%;
@@ -164,10 +176,17 @@ export default {
     width: 100%;
   }
   #miniNav {
-    height: 5%;
+    height: 7.5%;
     width: 100%;
-    display: flex;
     background-color: lightgray;
+  }
+  #navContainer {
+    height: 100%;
+    width: 100%;
+    margin-right: 2.5%;
+    justify-content: right;
+    display: flex;
+    align-items: center;
   }
   #cupVote {
     width: 100%;

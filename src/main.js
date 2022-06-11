@@ -7,6 +7,7 @@ import VueAuth0Plugin from 'vue-auth0-plugin';
 import PerfectScrollbar from 'vue3-perfect-scrollbar'
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
 import { AuthenticationState } from 'vue-auth0-plugin';
+import BootStrapVue from 'bootstrap-vue-3';
 
 
 
@@ -25,6 +26,7 @@ bouncy()
 const app = createApp(App)
 app.use(store)
 app.use(router)
+app.use(BootStrapVue)
 app.use(VueAuth0Plugin, {
   domain: config.domain,
   client_id: config.clientId,

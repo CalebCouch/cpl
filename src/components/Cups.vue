@@ -1,12 +1,16 @@
 <template>
   <div id="Cups">
     <div id="miniNav">
-   <!--    <div v-on:click="(evt) => {setNav(evt, 'pending')}" class="nav-item-custom">Pending Cups</div>
-      <div v-on:click="(evt) => {setNav(evt, 'approved')}" class="selected nav-item-custom">Approved Cups</div> -->
-      <div id="pending" v-on:click="(evt) => {setNav(evt, 'pending')}" class="nav-item-custom">Pending Cups</div>
-      <div id="active" v-on:click="(evt) => {setNav(evt, 'active')}" class="selected nav-item-custom">Active Cups</div>
-      <div id="completed" v-on:click="(evt) => {setNav(evt, 'complete')}" class="nav-item-custom">Compleated Cups</div>
-      <div v-on:click="createCup" style="margin-left: auto; color: white; background-color:gray;" class="nav-item-custom">Create Cup</div>
+      <div id="navContainer">
+        <div v-on:click="createCup" style="margin-right: auto;" class="nav-item-custom">Create Cup</div>
+        <b-dropdown id="dropdown-1" :text="'Status: '+selectedNav" variant="primary" class="m-md-2">
+          <b-dropdown-item v-on:click="(evt) => {setNav(evt, 'pending')}" >Pending</b-dropdown-item>
+          <b-dropdown-item v-on:click="(evt) => {setNav(evt, 'approved')}">Approved</b-dropdown-item>
+          <b-dropdown-item v-on:click="(evt) => {setNav(evt, 'active')}" >Active</b-dropdown-item>
+          <b-dropdown-divider></b-dropdown-divider>
+          <b-dropdown-item v-on:click="(evt) => {setNav(evt, 'complete')}">Compleated</b-dropdown-item>
+        </b-dropdown>
+      </div>
     </div>
 
     <perfect-scrollbar id="cupsContainer">
@@ -49,8 +53,8 @@ export default {
   },
   mounted() {
     this.store.commit('GetAllCups')
-    Array.from(document.getElementsByClassName('selected')).forEach(a => a.classList.remove('selected'))
-    document.getElementById(this.selectedNav).classList.add('selected')
+    // Array.from(document.getElementsByClassName('selected')).forEach(a => a.classList.remove('selected'))
+    // document.getElementById(this.selectedNav).classList.add('selected')
     
   },
   computed: {
@@ -80,17 +84,29 @@ export default {
 
 <style scoped>
   #Cups {
-    width: 90%;
-    height: 90%;
-    margin: auto;
-    margin-top: 4.5%;
-    box-shadow: 0px 0px 3px 3px lightgray;
+    width: 100%;
+    height: 100%;
+    /*margin: auto;*/
+    /*margin-top: 4.5%;*/
+    /*box-shadow: 0px 0px 3px 3px lightgray;*/
+    /*background-color: white;*/
+  }
+  
+  #container {
+    background-color: white!important;
   }
   #miniNav {
-    height: 5%;
+    height: 7.5%;
     width: 100%;
-    display: flex;
     background-color: lightgray;
+  }
+  #navContainer {
+    height: 100%;
+    width: 100%;
+    margin-right: 2.5%;
+    justify-content: right;
+    display: flex;
+    align-items: center;
   }
   #cupsContainer {
     height: 95%;

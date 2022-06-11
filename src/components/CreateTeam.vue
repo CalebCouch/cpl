@@ -17,7 +17,6 @@
 							type="hidden"
 							role="uploadcare-uploader"
 							data-public-key="c9d6990c50ebb5b39b90"
-							data-tabs="file camera url facebook gdrive gphotos"
 							data-effects="crop"/>
 						</div>
 						<img id="logoImage" :src="'https://ucarecdn.com/'+this.logo+'/-/quality/smart/-/preview/640x640/image.jpg'" type="text/html">
@@ -47,9 +46,6 @@ import Users from './Users'
 import uploadcare from 'uploadcare-widget/uploadcare.lang.en.min.js'
 import uploadcareTabEffects from 'uploadcare-widget-tab-effects/dist/uploadcare.tab-effects.lang.en.min.js'
 import { AuthenticationState } from 'vue-auth0-plugin';
-
-
-
 
 
 export default {

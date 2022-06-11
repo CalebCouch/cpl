@@ -216,8 +216,9 @@ export default createStore({
     },
     GetInvitableUsers: (state, getters) => () => {
       let validUsers = getters.GetUsers()
-      // validUsers = validUsers.filter(user => !getters.UserInCup(user.id))
-      // validUsers = validUsers.filter(user => getters.GetInvites(user.id).filter(invite => invite.teamId === state.currentTeam).length > 0)
+      console.log(validUsers)
+      validUsers = validUsers.filter(user => !getters.UserInCup(user.id))
+      validUsers = validUsers.filter(user => getters.GetInvites(user.id).filter(invite => invite.teamId === state.currentTeam).length > 0)
       return validUsers
     },
     UserInCup: (state, getters) => (userId) => {
